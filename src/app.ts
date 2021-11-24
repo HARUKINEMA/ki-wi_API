@@ -4,10 +4,10 @@ import * as data from "./drinking_machine.json";
 
 const app: express.Express = express();
 const router: express.Router = express.Router();
-const listData: { lat: number; lng: number; }[] = [];
+const dataList: { "location": number[] }[] = [];
 
 for (let key in data.machines){
-  listData.push(data.machines[key]);
+  dataList.push(data.machines[key]);
 }
 
 app.use(express.json());
@@ -18,14 +18,12 @@ router.get("/hello", (req: express.Request, res: express.Response) => {
 });
 
 router.post("/machine", (req: express.Request, res: express.Response) => {
-  const reqDataJson = {
-    lat: Number(req.query.lat),
-    lng: Number(req.query.lng)
+  const reqData = {
+    "location": [Number(req.query.lat), Number(req.query.lng)]
   };
-  res.send(reqDataJson);
-  //result.jsonObject = reqDataJson;
-  listData.push(reqDataJson);
-  const machineData = JSON.stringify({"machines": listData}, null, ' ')
+  res.send(reqData);
+  dataList.push(reqData);
+  const machineData = JSON.stringify({"machines": dataList}, null, ' ')
   fs.writeFileSync('./lib/drinking_machine.json', machineData);
 });
 

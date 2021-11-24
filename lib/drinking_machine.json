@@ -1,16 +1,3 @@
 {
- "machines": [
-  {
-   "lat": 0,
-   "lng": 0
-  },
-  {
-   "lat": 0,
-   "lng": 0
-  },
-  {
-   "lat": 1,
-   "lng": 2
-  }
- ]
+    "machines": []
 }
