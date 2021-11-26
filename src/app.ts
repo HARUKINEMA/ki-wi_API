@@ -13,11 +13,7 @@ for (let key in data.machines){
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-router.get("/hello", (req: express.Request, res: express.Response) => {
-  res.send("HelloWorld" + req.query.lat + " " + req.query.lng + "\n");
-});
-
-router.post("/machine", (req: express.Request, res: express.Response) => {
+router.post("/api/machine", (req: express.Request, res: express.Response) => {
   const reqData = {
     "location": [Number(req.query.lat), Number(req.query.lng)]
   };
@@ -27,7 +23,7 @@ router.post("/machine", (req: express.Request, res: express.Response) => {
   fs.writeFileSync('./lib/drinking_machine.json', machineData);
 });
 
-app.use("/api", router);
+app.use("", router);
 
 // 8000番ポートでAPIサーバ起動
 app.listen(8000, () => {
