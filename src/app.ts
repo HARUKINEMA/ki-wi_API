@@ -29,7 +29,7 @@ router.post("/machine", (req: express.Request, res: express.Response) => {
 
 app.use("/api", router);
 
-// 3000番ポートでAPIサーバ起動
-app.listen(3000, () => {
-  console.log("Listening on port 3000...");
+// 8000番ポートでAPIサーバ起動
+app.listen(8000, () => {
+  console.log("Listening on port 8000...");
 });
