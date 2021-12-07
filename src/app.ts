@@ -1,6 +1,14 @@
 import express from "express";
 import * as fs from "fs";
 import * as data from "./drinking_machine.json";
+import cors from "cors";
+
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+
 
 const app: express.Express = express();
 const router: express.Router = express.Router();
@@ -13,7 +21,7 @@ for (const key in data.machines) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-router.post("/api/machine", (req: express.Request, res: express.Response) => {
+router.post("/api/machine", cors(corsOptions), (req: express.Request, res: express.Response) => {
   const reqData = {
     location: [Number(req.query.lat), Number(req.query.lng)],
   };

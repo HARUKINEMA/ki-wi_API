@@ -1,3 +1,10 @@
 {
-    "machines": []
+ "machines": [
+  {
+   "location": [
+    100,
+    333
+   ]
+  }
+ ]
 }
