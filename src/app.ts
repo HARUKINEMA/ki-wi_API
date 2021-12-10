@@ -33,7 +33,7 @@ router.post("/api/machine", cors(corsOptions), (req: express.Request, res: expre
 
 app.use("", router);
 
-// 8000番ポートでAPIサーバ起動
-app.listen(8000, () => {
-  console.log("Listening on port 8000...");
+// 80番ポートでAPIサーバ起動
+app.listen(80, () => {
+  console.log("Listening on port 80...");
 });
