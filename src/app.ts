@@ -8,11 +8,20 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
+var allowCrossDomain = function(req:any, res:any, next:any) {
+  if (req.headers.origin.endsWith('.herokuapp.com')) {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  }
+  next();
+}
 
 
 const app: express.Express = express();
 const router: express.Router = express.Router();
 const dataList: { location: number[] }[] = [];
+
+app.use(allowCrossDomain);
 
 for (const key in data.machines) {
   dataList.push(data.machines[key]);
