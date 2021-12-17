@@ -19,13 +19,13 @@ var corsOptions = {
 // }
 const privateKey = "/home/ubuntu/private.key"
 const certKey = "/home/ubuntu/certificate.crt"
+const ca = "/home/ubuntu/ca_bundle.crt"
 
 fs.open(privateKey, "r", (err,fd)=>{
   if(err){
     console.log("private-key error");
     exit(1)
   }
-  console.log(fd.toString)
 })
 
 fs.open(certKey, "r", (err,fd)=>{
@@ -33,7 +33,13 @@ fs.open(certKey, "r", (err,fd)=>{
     console.log("private-key error");
     exit(1)
   }
-  console.log(fd.toString)
+})
+
+fs.open(ca, "r", (err,fd)=>{
+  if(err){
+    console.log("private-key error");
+    exit(1)
+  }
 })
 
 const app: express.Express = express();
@@ -42,6 +48,7 @@ const dataList: { location: number[] }[] = [];
 const server = https.createServer({
   key: fs.readFileSync(privateKey),
   cert: fs.readFileSync(certKey),
+  ca:fs.readFileSync(ca),
 }, app)
 
 //app.use(allowCrossDomain);
@@ -65,7 +72,7 @@ router.post("/api/machine", cors(), (req: express.Request, res: express.Response
 
 app.use("", router);
 
-// 80番ポートでAPIサーバ起動
-server.listen(80, () => {
+// 443番ポートでAPIサーバ起動
+server.listen(443, () => {
   console.log("start")
 })
