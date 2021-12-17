@@ -9,13 +9,13 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-var allowCrossDomain = function(req:any, res:any, next:any) {
-  if (req.headers.origin.endsWith('.herokuapp.com')) {
-    res.header('Access-Control-Allow-Origin', req.headers.origin);
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-  }
-  next();
-}
+// var allowCrossDomain = function(req:any, res:any, next:any) {
+//   if (req.headers.origin.endsWith('.herokuapp.com')) {
+//     res.header('Access-Control-Allow-Origin', req.headers.origin);
+//     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+//   }
+//   next();
+// }
 
 
 const app: express.Express = express();
@@ -26,7 +26,7 @@ const server = https.createServer({
   cert: fs.readFileSync('/home/ubuntu/certificate.crt'),
 }, app)
 
-app.use(allowCrossDomain);
+//app.use(allowCrossDomain);
 
 for (const key in data.machines) {
   dataList.push(data.machines[key]);
@@ -35,7 +35,7 @@ for (const key in data.machines) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-router.post("/api/machine", cors(corsOptions), (req: express.Request, res: express.Response) => {
+router.post("/api/machine", cors(), (req: express.Request, res: express.Response) => {
   const reqData = {
     location: [Number(req.query.lat), Number(req.query.lng)],
   };
