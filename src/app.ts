@@ -2,6 +2,7 @@ import express from "express";
 import * as fs from "fs";
 import * as data from "./drinking_machine.json";
 import cors from "cors";
+import https from "https";
 
 var corsOptions = {
   origin: 'http://localhost:3000',
@@ -20,6 +21,10 @@ var allowCrossDomain = function(req:any, res:any, next:any) {
 const app: express.Express = express();
 const router: express.Router = express.Router();
 const dataList: { location: number[] }[] = [];
+const server = https.createServer({
+  key: fs.readFileSync('/home/ubuntu/private.key'),
+  cert: fs.readFileSync('/home/ubuntu/certificate.crt'),
+}, app)
 
 app.use(allowCrossDomain);
 
@@ -43,6 +48,6 @@ router.post("/api/machine", cors(corsOptions), (req: express.Request, res: expre
 app.use("", router);
 
 // 80番ポートでAPIサーバ起動
-app.listen(80, () => {
-  console.log("Listening on port 80...");
-});
+server.listen(80, () => {
+  console.log("start")
+})
