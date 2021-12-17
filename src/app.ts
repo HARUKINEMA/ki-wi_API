@@ -3,6 +3,7 @@ import * as fs from "fs";
 import * as data from "./drinking_machine.json";
 import cors from "cors";
 import https from "https";
+import { exit } from "process";
 
 var corsOptions = {
   origin: 'http://localhost:3000',
@@ -16,14 +17,31 @@ var corsOptions = {
 //   }
 //   next();
 // }
+const privateKey = "/home/ubuntu/private.key"
+const certKey = "/home/ubuntu/certificate.crt"
 
+fs.open(privateKey, "r", (err,fd)=>{
+  if(err){
+    console.log("private-key error");
+    exit(1)
+  }
+  console.log(fd.toString)
+})
+
+fs.open(certKey, "r", (err,fd)=>{
+  if(err){
+    console.log("private-key error");
+    exit(1)
+  }
+  console.log(fd.toString)
+})
 
 const app: express.Express = express();
 const router: express.Router = express.Router();
 const dataList: { location: number[] }[] = [];
 const server = https.createServer({
-  key: fs.readFileSync('/home/ubuntu/private.key'),
-  cert: fs.readFileSync('/home/ubuntu/certificate.crt'),
+  key: fs.readFileSync(privateKey),
+  cert: fs.readFileSync(certKey),
 }, app)
 
 //app.use(allowCrossDomain);
