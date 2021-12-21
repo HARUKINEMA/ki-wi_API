@@ -38,7 +38,7 @@ router.post("/api/machine", cors(), (req: express.Request, res: express.Response
 
 app.use("", router);
 
-if (ENV!="TEST"){
+if (ENV=="PRODUCT"){
   const privateKey = "/home/ubuntu/private.key"
   const certKey = "/home/ubuntu/certificate.crt"
   const ca = "/home/ubuntu/ca_bundle.crt"
