@@ -4,6 +4,11 @@ import * as data from "./drinking_machine.json";
 import cors from "cors";
 import https from "https";
 import { exit } from "process";
+import * as dotenv from "dotenv";
+
+dotenv.config()
+const ENV = process.env.REACT_ENV as string;
+console.log(ENV)
 
 var corsOptions = {
   origin: 'http://localhost:3000',
@@ -17,39 +22,43 @@ var corsOptions = {
 //   }
 //   next();
 // }
-const privateKey = "/home/ubuntu/private.key"
-const certKey = "/home/ubuntu/certificate.crt"
-const ca = "/home/ubuntu/ca_bundle.crt"
-
-fs.open(privateKey, "r", (err,fd)=>{
-  if(err){
-    console.log("private-key error");
-    exit(1)
-  }
-})
-
-fs.open(certKey, "r", (err,fd)=>{
-  if(err){
-    console.log("private-key error");
-    exit(1)
-  }
-})
-
-fs.open(ca, "r", (err,fd)=>{
-  if(err){
-    console.log("private-key error");
-    exit(1)
-  }
-})
-
 const app: express.Express = express();
 const router: express.Router = express.Router();
 const dataList: { location: number[] }[] = [];
-const server = https.createServer({
-  key: fs.readFileSync(privateKey),
-  cert: fs.readFileSync(certKey),
-  ca:fs.readFileSync(ca),
-}, app)
+const server;
+
+if (ENV!="TEST"){
+  const privateKey = "/home/ubuntu/private.key"
+  const certKey = "/home/ubuntu/certificate.crt"
+  const ca = "/home/ubuntu/ca_bundle.crt"
+
+  fs.open(privateKey, "r", (err,fd)=>{
+    if(err){
+      console.log("private-key error");
+      exit(1)
+    }
+  })
+
+  fs.open(certKey, "r", (err,fd)=>{
+    if(err){
+      console.log("private-key error");
+      exit(1)
+    }
+  })
+
+  fs.open(ca, "r", (err,fd)=>{
+    if(err){
+      console.log("private-key error");
+      exit(1)
+    }
+  })
+  
+  const server = https.createServer({
+    key: fs.readFileSync(privateKey),
+    cert: fs.readFileSync(certKey),
+    ca:fs.readFileSync(ca),
+  }, app)
+}
 
 //app.use(allowCrossDomain);
 
@@ -72,7 +81,9 @@ router.post("/api/machine", cors(), (req: express.Request, res: express.Response
 
 app.use("", router);
 
-// 443番ポートでAPIサーバ起動
-server.listen(443, () => {
-  console.log("start")
-})
+if(ENV!="TEST"){
+  // 443番ポートでAPIサーバ起動
+  server.listen(443, () => {
+    console.log("start")
+  })
+}
