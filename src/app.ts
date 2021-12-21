@@ -15,17 +15,28 @@ var corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-// var allowCrossDomain = function(req:any, res:any, next:any) {
-//   if (req.headers.origin.endsWith('.herokuapp.com')) {
-//     res.header('Access-Control-Allow-Origin', req.headers.origin);
-//     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-//   }
-//   next();
-// }
 const app: express.Express = express();
 const router: express.Router = express.Router();
 const dataList: { location: number[] }[] = [];
-const server;
+
+for (const key in data.machines) {
+  dataList.push(data.machines[key]);
+}
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+router.post("/api/machine", cors(), (req: express.Request, res: express.Response) => {
+  const reqData = {
+    location: [Number(req.query.lat), Number(req.query.lng)],
+  };
+  res.send(reqData);
+  dataList.push(reqData);
+  const machineData = JSON.stringify({ machines: dataList }, null, " ");
+  fs.writeFileSync("./lib/drinking_machine.json", machineData);
+});
+
+app.use("", router);
 
 if (ENV!="TEST"){
   const privateKey = "/home/ubuntu/private.key"
@@ -58,32 +69,12 @@ if (ENV!="TEST"){
     cert: fs.readFileSync(certKey),
     ca:fs.readFileSync(ca),
   }, app)
-}
-
-//app.use(allowCrossDomain);
-
-for (const key in data.machines) {
-  dataList.push(data.machines[key]);
-}
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-router.post("/api/machine", cors(), (req: express.Request, res: express.Response) => {
-  const reqData = {
-    location: [Number(req.query.lat), Number(req.query.lng)],
-  };
-  res.send(reqData);
-  dataList.push(reqData);
-  const machineData = JSON.stringify({ machines: dataList }, null, " ");
-  fs.writeFileSync("./lib/drinking_machine.json", machineData);
-});
-
-app.use("", router);
-
-if(ENV!="TEST"){
-  // 443番ポートでAPIサーバ起動
   server.listen(443, () => {
     console.log("start")
   })
+}else{
+  app.listen(443, ()=>{
+    console.log("test server start")
+  })
 }
+
