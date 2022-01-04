@@ -35,6 +35,11 @@ router.post(
   }
 );
 
+
+router.post("/api/image", cors(),(req:express.Request, res:express.Response)=>{
+  console.log(req.body)
+})
+
 app.use("", router);
 
 if (ENV == "PRODUCT") {

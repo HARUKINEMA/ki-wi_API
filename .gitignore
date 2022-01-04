@@ -120,7 +120,12 @@ dist
 # vscode
 .vscode/
 
+#idea
+.idea/
+
 lib/
 
 #.env
 .env
+
+
