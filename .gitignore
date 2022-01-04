@@ -121,3 +121,6 @@ dist
 .vscode/
 
 lib/
+
+#.env
+.env
