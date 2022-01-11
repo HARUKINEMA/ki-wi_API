@@ -43,7 +43,7 @@ router.options('/api/image', cors(),(req:express.Request, res:express.Response)=
 router.post("/api/image", cors(),(req:express.Request, res:express.Response)=>{
   res.status(200)
   console.log(req.body)
-  res.send("きました!!");
+  res.send("きた")
 })
 
 app.use("", router);
