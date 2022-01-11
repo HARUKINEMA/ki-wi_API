@@ -5,6 +5,7 @@ import cors from "cors";
 import https from "https";
 import { exit } from "process";
 import * as dotenv from "dotenv";
+import * as bodyParser from 'body-parser';
 
 dotenv.config();
 const ENV = process.env.REACT_ENV as string;
@@ -17,7 +18,8 @@ const dataList: { location: number[] }[] = [];
 for (const key in data.machines) {
   dataList.push(data.machines[key]);
 }
-
+app.use(bodyParser.json({limit: '50mb'})); // jsonをパースする際のlimitを設定
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,9 +37,13 @@ router.post(
   }
 );
 
-
+router.options('/api/image', cors(),(req:express.Request, res:express.Response)=>{
+  console.log("AAAAAA")
+})
 router.post("/api/image", cors(),(req:express.Request, res:express.Response)=>{
+  res.status(200)
   console.log(req.body)
+  res.send("きました!!");
 })
 
 app.use("", router);
