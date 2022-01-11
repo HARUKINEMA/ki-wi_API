@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc -b tsconfig.json && node lib/app.js"
+    "start": "npx tsc -b tsconfig.json && node lib/app.js",
+    "fix": "eslint ./src --ext ts,tsx --fix --max-warnings=0",
+    "fmt": "npx prettier --write ./src"
   },
   "keywords": [],
   "author": "",
