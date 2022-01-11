@@ -37,7 +37,7 @@ export function SaveImage(fileName: string, data:string):boolean{
 }
 
 /**
- * 対応している拡張しか調べます．対応しているなら true を返します．
+ * 対応している拡張子かどうか調べます．対応しているなら true を返します．
  * @param fileName
  * @constructor
  */
