@@ -6,7 +6,7 @@ const BASE_DIR = "./lib/image/"
 
 const ALLOW_EXTENSION = [".jpg", ".jpeg", ".png"]
 
-function save(fileName: string, data:string):boolean{
+function save(fileName: string, data:Buffer):boolean{
   try {
     fs.writeFileSync(BASE_DIR + fileName, data);
   }catch (e){
@@ -19,17 +19,18 @@ function save(fileName: string, data:string):boolean{
 /**
  * 画像を保存します．正常に保存できた場合は true を返します．
  * @param fileName
- * @param data
+ * @param base64
  * @constructor
  */
-export function SaveImage(fileName: string, data:string):boolean{
+export function SaveImage(fileName: string, base64:string):boolean{
   // フォルダが存在しない場合は作成
   if (!fs.existsSync(BASE_DIR)){
     fs.mkdirSync(BASE_DIR)
   }
 
   const extension = path.extname(fileName)
-  const hash = crypto.createHash("sha256").update(data, 'utf8').digest("hex")
+  const hash = crypto.createHash("sha256").update(base64, 'utf8').digest("hex")
+  const data = Buffer.from(base64, 'base64')
   const newFileName = hash+extension
   console.debug(`filename is ${fileName}, extension is ${extension}, newFileName is ${newFileName}`)
 

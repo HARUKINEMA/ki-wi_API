@@ -46,7 +46,7 @@ router.post("/api/image", cors(),(req:express.Request, res:express.Response)=>{
   const data = req.body.data;
   const fileName = req.body.name;
 
-  console.log(fileName)
+  console.log(data)
 
   const isFile = IsAllowExtension(fileName)
   console.log(`isFIle = ${isFile}`)
