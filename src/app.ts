@@ -6,6 +6,7 @@ import https from "https";
 import { exit } from "process";
 import * as dotenv from "dotenv";
 import * as bodyParser from 'body-parser';
+import {IsAllowExtension, SaveImage} from "./image";
 
 dotenv.config();
 const ENV = process.env.REACT_ENV as string;
@@ -42,8 +43,29 @@ router.options('/api/image', cors(),(req:express.Request, res:express.Response)=
 })
 router.post("/api/image", cors(),(req:express.Request, res:express.Response)=>{
   res.status(200)
-  console.log(req.body)
-  res.send("きた")
+  const data = req.body.data;
+  const fileName = req.body.name;
+
+  console.log(fileName)
+
+  const isFile = IsAllowExtension(fileName)
+  console.log(`isFIle = ${isFile}`)
+  if (isFile){
+    const ok = SaveImage(fileName, data)
+    if (!ok){
+      console.log("failed save")
+      res.status(500)
+      res.send("保存に失敗しました")
+      return
+    }
+    console.log("success save")
+    res.status(200)
+    res.send("保存完了")
+    return
+  }
+  res.status(400)
+  res.send("対応している拡張子ではありません")
+  return
 })
 
 app.use("", router);

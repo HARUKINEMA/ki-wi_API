@@ -43,7 +43,11 @@ export function SaveImage(fileName: string, data:string):boolean{
  */
 export function IsAllowExtension(fileName:string):boolean{
   const extension = path.extname(fileName)
-  for (let i=0; i++;i<ALLOW_EXTENSION.length){
+  console.debug(`extension = ${extension}`)
+  console.debug(``)
+  console.log(`length = ${ALLOW_EXTENSION.length}`)
+  for (let i=0;i<ALLOW_EXTENSION.length; i++){
+    console.debug(`ALLOW_EXTENSION[i] = ${ALLOW_EXTENSION[i]}`)
     if (extension == ALLOW_EXTENSION[i]){
       return true
     }
